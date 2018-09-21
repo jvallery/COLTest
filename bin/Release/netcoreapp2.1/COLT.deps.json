@@ -1,16 +1,16 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "a8ef12347c1c02d4a3c3ffd037bebbe2bc8cccc6"
+    "signature": "05acfd253580cf2006811ffe8553b8e994faf5a8"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
       "COLT/1.0.0": {
         "dependencies": {
-          "AWSSDK.S3": "3.3.23.2",
+          "AWSSDK.S3": "3.3.24",
           "CsvHelper": "7.1.1",
-          "Google.Cloud.Storage.V1": "2.3.0-beta01",
+          "Google.Cloud.Storage.V1": "2.2.0",
           "Newtonsoft.Json": "11.0.2",
           "WindowsAzure.Storage": "9.3.2"
         },
@@ -33,14 +33,14 @@
           }
         }
       },
-      "AWSSDK.S3/3.3.23.2": {
+      "AWSSDK.S3/3.3.24": {
         "dependencies": {
           "AWSSDK.Core": "3.3.25.3"
         },
         "runtime": {
           "lib/netstandard1.3/AWSSDK.S3.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.23.2"
+            "fileVersion": "3.3.24.0"
           }
         }
       },
@@ -72,7 +72,7 @@
       "Google.Api.Gax.Rest/2.5.0": {
         "dependencies": {
           "Google.Api.Gax": "2.5.0",
-          "Google.Apis.Auth": "1.35.2"
+          "Google.Apis.Auth": "1.35.1"
         },
         "runtime": {
           "lib/netstandard1.3/Google.Api.Gax.Rest.dll": {
@@ -81,66 +81,66 @@
           }
         }
       },
-      "Google.Apis/1.35.2": {
+      "Google.Apis/1.35.1": {
         "dependencies": {
-          "Google.Apis.Core": "1.35.2",
+          "Google.Apis.Core": "1.35.1",
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.dll": {
-            "assemblyVersion": "1.35.2.0",
-            "fileVersion": "1.35.2.0"
+            "assemblyVersion": "1.35.1.0",
+            "fileVersion": "1.35.1.0"
           }
         }
       },
-      "Google.Apis.Auth/1.35.2": {
+      "Google.Apis.Auth/1.35.1": {
         "dependencies": {
-          "Google.Apis": "1.35.2",
-          "Google.Apis.Core": "1.35.2"
+          "Google.Apis": "1.35.1",
+          "Google.Apis.Core": "1.35.1"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {
-            "assemblyVersion": "1.35.2.0",
-            "fileVersion": "1.35.2.0"
+            "assemblyVersion": "1.35.1.0",
+            "fileVersion": "1.35.1.0"
           },
           "lib/netstandard2.0/Google.Apis.Auth.dll": {
-            "assemblyVersion": "1.35.2.0",
-            "fileVersion": "1.35.2.0"
+            "assemblyVersion": "1.35.1.0",
+            "fileVersion": "1.35.1.0"
           }
         }
       },
-      "Google.Apis.Core/1.35.2": {
+      "Google.Apis.Core/1.35.1": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.Core.dll": {
-            "assemblyVersion": "1.35.2.0",
-            "fileVersion": "1.35.2.0"
+            "assemblyVersion": "1.35.1.0",
+            "fileVersion": "1.35.1.0"
           }
         }
       },
-      "Google.Apis.Storage.v1/1.35.2.1343": {
+      "Google.Apis.Storage.v1/1.35.1.1266": {
         "dependencies": {
-          "Google.Apis": "1.35.2",
-          "Google.Apis.Auth": "1.35.2"
+          "Google.Apis": "1.35.1",
+          "Google.Apis.Auth": "1.35.1"
         },
         "runtime": {
           "lib/netstandard2.0/Google.Apis.Storage.v1.dll": {
-            "assemblyVersion": "1.35.2.1343",
-            "fileVersion": "1.35.2.1343"
+            "assemblyVersion": "1.35.1.1266",
+            "fileVersion": "1.35.1.1266"
           }
         }
       },
-      "Google.Cloud.Storage.V1/2.3.0-beta01": {
+      "Google.Cloud.Storage.V1/2.2.0": {
         "dependencies": {
           "Google.Api.Gax.Rest": "2.5.0",
-          "Google.Apis.Storage.v1": "1.35.2.1343"
+          "Google.Apis.Storage.v1": "1.35.1.1266"
         },
         "runtime": {
           "lib/netstandard1.3/Google.Cloud.Storage.V1.dll": {
-            "assemblyVersion": "2.3.0.0",
-            "fileVersion": "2.3.0.0"
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.0"
           }
         }
       },
@@ -620,12 +620,12 @@
       "path": "awssdk.core/3.3.25.3",
       "hashPath": "awssdk.core.3.3.25.3.nupkg.sha512"
     },
-    "AWSSDK.S3/3.3.23.2": {
+    "AWSSDK.S3/3.3.24": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yfzHyFog4CXP2v/srqCp8R8I6G76tlWuxj3ciEuRDt91V36isRvBvPjpdLYBAiBVMH3KAll/7sVO1bH13ySLSw==",
-      "path": "awssdk.s3/3.3.23.2",
-      "hashPath": "awssdk.s3.3.3.23.2.nupkg.sha512"
+      "sha512": "sha512-1+4YnKfkpklj4XcJ6Wns8EJDDAyBCa/HQY6on7/BxU7tgT/p1PykdzFwavqgSOcm/dyKhKlCdwcqWm8fH5ZW1w==",
+      "path": "awssdk.s3/3.3.24",
+      "hashPath": "awssdk.s3.3.3.24.nupkg.sha512"
     },
     "CsvHelper/7.1.1": {
       "type": "package",
@@ -648,40 +648,40 @@
       "path": "google.api.gax.rest/2.5.0",
       "hashPath": "google.api.gax.rest.2.5.0.nupkg.sha512"
     },
-    "Google.Apis/1.35.2": {
+    "Google.Apis/1.35.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kckpDbjCQA4lN9ZJ6Hb0SlWfg8e2ei0rqh+6bpuZLgB8MAL0tjwKZyr+d+iorKfB+SlmIgTtVfgDea1aH3dpbA==",
-      "path": "google.apis/1.35.2",
-      "hashPath": "google.apis.1.35.2.nupkg.sha512"
+      "sha512": "sha512-ZBWKDuj7qznEaNYHFRYcwbDfdDltqfeUrpVL8ijahy7KGG8DdHBY86uA2bpiKTAmgbOO7TKNkvaURAVJur98eQ==",
+      "path": "google.apis/1.35.1",
+      "hashPath": "google.apis.1.35.1.nupkg.sha512"
     },
-    "Google.Apis.Auth/1.35.2": {
+    "Google.Apis.Auth/1.35.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pcXQGo6gjY9Tt7+UkPcOYnh/hvBbCEKif+JEUSijkpR8Z8TxIOKcDOEhRNHXv7ohufg89hllzojm+4ae+wFQFA==",
-      "path": "google.apis.auth/1.35.2",
-      "hashPath": "google.apis.auth.1.35.2.nupkg.sha512"
+      "sha512": "sha512-GklaB+R3yiC13T/duEW10uqvugSr1zgPcn1P3O4hOPcMoS4Z/NvGYns2IoEywVKXuFg4kGH/VUCZ7xSUdcAV6g==",
+      "path": "google.apis.auth/1.35.1",
+      "hashPath": "google.apis.auth.1.35.1.nupkg.sha512"
     },
-    "Google.Apis.Core/1.35.2": {
+    "Google.Apis.Core/1.35.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MbCIK1KxWT3yQJtuI77NwzGPmNmAaEPSYdhY9ObdypQkxe9yApw75L2V/30/YHslCc1fNrlJ5HRE9DEp90jOIw==",
-      "path": "google.apis.core/1.35.2",
-      "hashPath": "google.apis.core.1.35.2.nupkg.sha512"
+      "sha512": "sha512-xVzrkplgHMOCqFQHIfy9HvJBKNLQaRV+orWFHjpUAtGZe0GghHdQKG5dzLNnYjLQXICBftlK5FWk9AoAotYbYw==",
+      "path": "google.apis.core/1.35.1",
+      "hashPath": "google.apis.core.1.35.1.nupkg.sha512"
     },
-    "Google.Apis.Storage.v1/1.35.2.1343": {
+    "Google.Apis.Storage.v1/1.35.1.1266": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YmsuaXkj1mdfw5whsMAE7Qj6wYVqeFpP13Uzxh6kAiL4K0kr6HPj/DrPYkBBFq/Qv1BYci3NFWrFwdDhekXsAA==",
-      "path": "google.apis.storage.v1/1.35.2.1343",
-      "hashPath": "google.apis.storage.v1.1.35.2.1343.nupkg.sha512"
+      "sha512": "sha512-5yVSpcDuS2swyrK518EyEddQow2c36x2sSRYY5JhMLknEVeeTH5E7b5x6zaUQlYjf8O/ovDQO7qLUCJzj34V9w==",
+      "path": "google.apis.storage.v1/1.35.1.1266",
+      "hashPath": "google.apis.storage.v1.1.35.1.1266.nupkg.sha512"
     },
-    "Google.Cloud.Storage.V1/2.3.0-beta01": {
+    "Google.Cloud.Storage.V1/2.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Cp150z1CR9d7nlrGNChBB01PnScX9MCdzy2q0AooOqiDbPNaKK5RFvLGABLZM73Say54ULFKnB4B8tH0DXFTsA==",
-      "path": "google.cloud.storage.v1/2.3.0-beta01",
-      "hashPath": "google.cloud.storage.v1.2.3.0-beta01.nupkg.sha512"
+      "sha512": "sha512-c4pWnndwCdOfrodNX0g8DOyPQDYBVZB1cJElfbJwZpxaVqvV6dyTwpipT+B8J+XJNZDv040M90k+zUtAImwcyw==",
+      "path": "google.cloud.storage.v1/2.2.0",
+      "hashPath": "google.cloud.storage.v1.2.2.0.nupkg.sha512"
     },
     "Microsoft.CSharp/4.4.0": {
       "type": "package",

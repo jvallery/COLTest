@@ -15,6 +15,7 @@ C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\COLT.runtimecon
 C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\COLT.runtimeconfig.dev.json
 C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\COLT.dll
 C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\COLT.pdb
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.csprojAssemblyReference.cache
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.csproj.CoreCompileInputs.cache
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.AssemblyInfoInputs.cache
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.AssemblyInfo.cs

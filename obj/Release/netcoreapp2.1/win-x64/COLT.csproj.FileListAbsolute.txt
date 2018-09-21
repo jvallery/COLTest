@@ -1,0 +1,15 @@
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\hostpolicy.dll
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\hostfxr.dll
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\COLT.exe
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\job.json
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\COLT.deps.json
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\COLT.runtimeconfig.json
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\COLT.runtimeconfig.dev.json
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\COLT.dll
+C:\Users\javaller\source\repos\COLTest\bin\Release\netcoreapp2.1\win-x64\COLT.pdb
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\win-x64\COLT.csprojAssemblyReference.cache
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\win-x64\COLT.csproj.CoreCompileInputs.cache
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\win-x64\COLT.AssemblyInfoInputs.cache
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\win-x64\COLT.AssemblyInfo.cs
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\win-x64\COLT.dll
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\win-x64\COLT.pdb

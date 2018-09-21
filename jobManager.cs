@@ -7,6 +7,17 @@ namespace COLT
 {
 
 
+    public class IPInfo
+    {
+        public string ip { get; set; }
+        public string city { get; set; }
+        public string region { get; set; }
+        public string country { get; set; }
+        public string loc { get; set; }
+        public string postal { get; set; }
+        public string org { get; set; }
+    }
+
     public class COLTJob
     {
         public Config config { get; set; }
@@ -16,6 +27,7 @@ namespace COLT
     public class Config
     {
         public Cloud[] cloud { get; set; }
+        public string output { get; set; }
     }
 
     public class Cloud
@@ -25,10 +37,10 @@ namespace COLT
         public string awsAccessKeySecret { get; set; }
         public string awsAccessKey { get; set; }
         public string awsS3bucket { get; set; }
-        public string gcsbucket { get; set;  }
+        public string gcsbucket { get; set; }
         public string awsServiceUrl { get; set; }
         public string blobStorageAccountConnectionString { get; set; }
-        public string blobContainer { get; set; }        
+        public string blobContainer { get; set; }
         public string credential { get; set; }
         public string projectid { get; set; }
 

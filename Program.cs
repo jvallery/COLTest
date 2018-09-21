@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace COLT
 
         //Timed events
         private static ConcurrentQueue<TimedEvent> timedEvents = new ConcurrentQueue<TimedEvent>();
-
+        private static IPInfo _ip;
 
         static void Main(string[] args)
         {
@@ -30,6 +31,12 @@ namespace COLT
             {
                 if (!_cloudConfig.ContainsKey(cloud.name))
                     _cloudConfig.Add(cloud.name, cloud);
+            }
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var response = httpClient.GetAsync("http://ipinfo.io/json").Result;                
+                _ip = JsonConvert.DeserializeObject<IPInfo>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
             }
 
             Console.WriteLine("Job file contains {0} jobs and {1} storage targets", manager.job.jobs.Length, manager.job.config.cloud.Length);
@@ -66,13 +73,31 @@ namespace COLT
                 }
             }
 
-            string output = JsonConvert.SerializeObject(events);
-            File.WriteAllText(@"output.json", output);
+            Cloud outputCloud;
+            if (_cloudConfig.TryGetValue(manager.job.config.output, out outputCloud))
+            {                
 
-            var csv = new CsvWriter(File.CreateText(@"output.csv"));            
-            csv.WriteRecords(events);
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var streamWriter = new StreamWriter(memoryStream))
+                    {
+                        using (var csvWriter = new CsvWriter(streamWriter))
+                        {
+                            csvWriter.WriteRecords(events);
+                        } // StreamWriter gets flushed here.
+                    }
+                    blobManager blobClient = new blobManager(outputCloud.blobStorageAccountConnectionString, "results");
+                    blobClient.UploadFileAsync(memoryStream.ToArray(), string.Format("{0}.csv", DateTime.UtcNow.ToString("yyyyMMddHHmmss"))).GetAwaiter().GetResult();
 
-            Console.WriteLine("Wrote {0} timed events to output.json and output.csv", events.Count);
+                    string output = JsonConvert.SerializeObject(events);
+                    blobClient.UploadFileAsync(Encoding.UTF8.GetBytes(output), string.Format("{0}.json", DateTime.UtcNow.ToString("yyyyMMddHHmmss"))).GetAwaiter().GetResult();
+
+                }
+
+                Console.WriteLine("Wrote {0} timed events to output.json and output.csv and uploaded to {1}", events.Count, outputCloud.name);
+            }
+
+            
             Console.ReadLine();
         }
 
@@ -81,6 +106,9 @@ namespace COLT
             Cloud cloud;
             if (_cloudConfig.TryGetValue(job.cloud, out cloud))
             {
+
+                List<double> results = new List<double>();
+
                 switch (cloud.type)
                 {
                     case "s3":
@@ -102,6 +130,13 @@ namespace COLT
                                     string url = s3.GeneratePreSignedURL(10, s3files[r]);
 
                                     TimedEvent timer = new TimedEvent();
+                                    timer.sourceCity = _ip.city;
+                                    timer.sourceCountry = _ip.country;
+                                    timer.sourceIp = _ip.ip;
+                                    timer.sourceLoc = _ip.loc;
+                                    timer.sourceOrg = _ip.org;
+                                    timer.sourcePostal = _ip.postal;
+                                    timer.sourceRegion = _ip.region;
                                     timer.cloudName = cloud.name;
                                     timer.cloudType = cloud.type;
                                     timer.eventType = job.type;
@@ -124,7 +159,7 @@ namespace COLT
 
                                     timer.fileSizeInBytes = content.Length;
                                     timedEvents.Enqueue(timer);
-
+                                    results.Add(timer.elapsedMiliseconds);
                                     Console.WriteLine("Downloaded {0} from {1} in {2} ms", timer.fileName, timer.cloudName, timer.elapsedMiliseconds);
                                 }
                             }
@@ -154,6 +189,13 @@ namespace COLT
                                     string url = blobClient.GeneratePreSignedURL(10, blobfiles[r]);
 
                                     TimedEvent timer = new TimedEvent();
+                                    timer.sourceCity = _ip.city;
+                                    timer.sourceCountry = _ip.country;
+                                    timer.sourceIp = _ip.ip;
+                                    timer.sourceLoc = _ip.loc;
+                                    timer.sourceOrg = _ip.org;
+                                    timer.sourcePostal = _ip.postal;
+                                    timer.sourceRegion = _ip.region;
                                     timer.cloudName = cloud.name;
                                     timer.cloudType = cloud.type;                                    
                                     timer.eventType = job.type;
@@ -174,7 +216,7 @@ namespace COLT
                                     var content = await response.Content.ReadAsByteArrayAsync();
                                     timer.fileSizeInBytes = content.Length;
                                     timedEvents.Enqueue(timer);
-
+                                    results.Add(timer.elapsedMiliseconds);
                                     Console.WriteLine("Downloaded {0} from {1} in {2} ms", timer.fileName, timer.cloudName, timer.elapsedMiliseconds);
                                 }
                             }
@@ -201,6 +243,13 @@ namespace COLT
                                 string url = gcsClient.GeneratePreSignedURL(10, gcsFiles[r]);
 
                                 TimedEvent timer = new TimedEvent();
+                                timer.sourceCity = _ip.city;
+                                timer.sourceCountry = _ip.country;
+                                timer.sourceIp = _ip.ip;
+                                timer.sourceLoc = _ip.loc;
+                                timer.sourceOrg = _ip.org;
+                                timer.sourcePostal = _ip.postal;
+                                timer.sourceRegion = _ip.region;
                                 timer.cloudName = cloud.name;
                                 timer.cloudType = cloud.type;
                                 timer.eventType = job.type;
@@ -221,6 +270,7 @@ namespace COLT
                                 var content = await response.Content.ReadAsByteArrayAsync();
                                 timer.fileSizeInBytes = content.Length;
                                 timedEvents.Enqueue(timer);
+                                results.Add(timer.elapsedMiliseconds);
 
                                 Console.WriteLine("Downloaded {0} from {1} in {2} ms", timer.fileName, timer.cloudName, timer.elapsedMiliseconds);
                             }
@@ -233,16 +283,18 @@ namespace COLT
                         break;
                 }
 
+                Console.WriteLine("Average latency: {0}, 99th percentile: {1}", Average(results), Percentile(results, 0.99));
             }
 
         }
 
         private async static Task Upload(Job job)
-        {
-
+        {            
             Cloud cloud;
             if (_cloudConfig.TryGetValue(job.cloud, out cloud))
             {
+                List<double> results = new List<double>();
+
                 switch (cloud.type)
                 {
                     case "s3":
@@ -256,6 +308,13 @@ namespace COLT
                                {
 
                                    TimedEvent timer = new TimedEvent();
+                                   timer.sourceCity = _ip.city;
+                                   timer.sourceCountry = _ip.country;
+                                   timer.sourceIp = _ip.ip;
+                                   timer.sourceLoc = _ip.loc;
+                                   timer.sourceOrg = _ip.org;
+                                   timer.sourcePostal = _ip.postal;
+                                   timer.sourceRegion = _ip.region;
                                    timer.cloudName = cloud.name;
                                    timer.cloudType = cloud.type;
                                    timer.eventType = job.type;
@@ -276,6 +335,8 @@ namespace COLT
                                    timer.fileSizeInBytes = job.fileSizeInBytes;
                                    timedEvents.Enqueue(timer);
 
+                                   results.Add(timer.elapsedMiliseconds);
+
 
                                    
                                }
@@ -283,7 +344,7 @@ namespace COLT
                                {
                                    Console.WriteLine(ex.Message);
                                }
-                               Console.WriteLine("{0}{1} uploaded", job.filePrefix, i);
+                               Console.WriteLine("{0}{1} uploaded to {1}", job.filePrefix, i, cloud.name);
                            });
 
                         }
@@ -305,6 +366,13 @@ namespace COLT
                                 try
                                 {
                                     TimedEvent timer = new TimedEvent();
+                                    timer.sourceCity = _ip.city;
+                                    timer.sourceCountry = _ip.country;
+                                    timer.sourceIp = _ip.ip;
+                                    timer.sourceLoc = _ip.loc;
+                                    timer.sourceOrg = _ip.org;
+                                    timer.sourcePostal = _ip.postal;
+                                    timer.sourceRegion = _ip.region;
                                     timer.cloudName = cloud.name;
                                     timer.cloudType = cloud.type;
                                     timer.eventType = job.type;
@@ -324,14 +392,14 @@ namespace COLT
 
                                     timer.fileSizeInBytes = job.fileSizeInBytes;
                                     timedEvents.Enqueue(timer);
+                                    results.Add(timer.elapsedMiliseconds);
 
-                                    
                                 }
                                 catch (Exception ex)
                                 {
                                     Console.WriteLine(ex.Message);
                                 }
-                                Console.WriteLine("{0}{1} uploaded", job.filePrefix, i);
+                                Console.WriteLine("{0}{1} uploaded to {1}", job.filePrefix, i, cloud.name);
                             });
 
                         }
@@ -354,6 +422,13 @@ namespace COLT
                                 try
                                 {
                                     TimedEvent timer = new TimedEvent();
+                                    timer.sourceCity = _ip.city;
+                                    timer.sourceCountry = _ip.country;
+                                    timer.sourceIp = _ip.ip;
+                                    timer.sourceLoc = _ip.loc;
+                                    timer.sourceOrg = _ip.org;
+                                    timer.sourcePostal = _ip.postal;
+                                    timer.sourceRegion = _ip.region;
                                     timer.cloudName = cloud.name;
                                     timer.cloudType = cloud.type;
                                     timer.eventType = job.type;
@@ -373,14 +448,14 @@ namespace COLT
 
                                     timer.fileSizeInBytes = job.fileSizeInBytes;
                                     timedEvents.Enqueue(timer);
+                                    results.Add(timer.elapsedMiliseconds);
 
-                                    
                                 }
                                 catch (Exception ex)
                                 {
                                     Console.WriteLine(ex.Message);
                                 }
-                                Console.WriteLine("{0}{1} uploaded", job.filePrefix, i);
+                                Console.WriteLine("{0}{1} uploaded to {1}", job.filePrefix, i, cloud.name);
                             });
 
                         }
@@ -395,10 +470,40 @@ namespace COLT
                         break;
                 }
 
+                Console.WriteLine("Average latency: {0}, 99th percentile: {1}", Average(results), Percentile(results, 0.99));
+
             }
 
 
 
         }
+
+        public static double Percentile(IEnumerable<double> seq, double percentile)
+        {
+            var elements = seq.ToArray();
+            Array.Sort(elements);
+            double realIndex = percentile * (elements.Length - 1);
+            int index = (int)realIndex;
+            double frac = realIndex - index;
+            if (index + 1 < elements.Length)
+                return elements[index] * (1 - frac) + elements[index + 1] * frac;
+            else
+                return elements[index];
+        }
+
+        public static double Average(IEnumerable<double> seq)
+        {
+            double sum = 0;
+
+            var elements = seq.ToArray();
+
+            foreach (var val in elements)
+                sum += val;
+
+            double result = sum / elements.Length;
+
+            return result;
+        }
+
     }
 }

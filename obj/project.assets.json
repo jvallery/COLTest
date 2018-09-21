@@ -18,7 +18,7 @@
           "lib/netstandard1.3/AWSSDK.Core.dll": {}
         }
       },
-      "AWSSDK.S3/3.3.23.2": {
+      "AWSSDK.S3/3.3.24": {
         "type": "package",
         "dependencies": {
           "AWSSDK.Core": "[3.3.25.3, 3.4.0)"
@@ -72,10 +72,10 @@
           "lib/netstandard1.3/Google.Api.Gax.Rest.dll": {}
         }
       },
-      "Google.Apis/1.35.2": {
+      "Google.Apis/1.35.1": {
         "type": "package",
         "dependencies": {
-          "Google.Apis.Core": "1.35.2",
+          "Google.Apis.Core": "1.35.1",
           "Newtonsoft.Json": "10.0.2"
         },
         "compile": {
@@ -85,11 +85,11 @@
           "lib/netstandard2.0/Google.Apis.dll": {}
         }
       },
-      "Google.Apis.Auth/1.35.2": {
+      "Google.Apis.Auth/1.35.1": {
         "type": "package",
         "dependencies": {
-          "Google.Apis": "1.35.2",
-          "Google.Apis.Core": "1.35.2"
+          "Google.Apis": "1.35.1",
+          "Google.Apis.Core": "1.35.1"
         },
         "compile": {
           "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {},
@@ -100,7 +100,7 @@
           "lib/netstandard2.0/Google.Apis.Auth.dll": {}
         }
       },
-      "Google.Apis.Core/1.35.2": {
+      "Google.Apis.Core/1.35.1": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "10.0.2"
@@ -112,11 +112,11 @@
           "lib/netstandard2.0/Google.Apis.Core.dll": {}
         }
       },
-      "Google.Apis.Storage.v1/1.35.2.1343": {
+      "Google.Apis.Storage.v1/1.35.1.1266": {
         "type": "package",
         "dependencies": {
-          "Google.Apis": "1.35.2",
-          "Google.Apis.Auth": "1.35.2"
+          "Google.Apis": "1.35.1",
+          "Google.Apis.Auth": "1.35.1"
         },
         "compile": {
           "lib/netstandard2.0/Google.Apis.Storage.v1.dll": {}
@@ -125,11 +125,11 @@
           "lib/netstandard2.0/Google.Apis.Storage.v1.dll": {}
         }
       },
-      "Google.Cloud.Storage.V1/2.3.0-beta01": {
+      "Google.Cloud.Storage.V1/2.2.0": {
         "type": "package",
         "dependencies": {
           "Google.Api.Gax.Rest": "2.5.0",
-          "Google.Apis.Storage.v1": "1.35.2.1343",
+          "Google.Apis.Storage.v1": "1.35.1.1266",
           "NETStandard.Library": "1.6.1"
         },
         "compile": {
@@ -1129,14 +1129,14 @@
         "tools/account-management.ps1"
       ]
     },
-    "AWSSDK.S3/3.3.23.2": {
-      "sha512": "yfzHyFog4CXP2v/srqCp8R8I6G76tlWuxj3ciEuRDt91V36isRvBvPjpdLYBAiBVMH3KAll/7sVO1bH13ySLSw==",
+    "AWSSDK.S3/3.3.24": {
+      "sha512": "1+4YnKfkpklj4XcJ6Wns8EJDDAyBCa/HQY6on7/BxU7tgT/p1PykdzFwavqgSOcm/dyKhKlCdwcqWm8fH5ZW1w==",
       "type": "package",
-      "path": "awssdk.s3/3.3.23.2",
+      "path": "awssdk.s3/3.3.24",
       "files": [
         ".signature.p7s",
         "analyzers/dotnet/cs/AWSSDK.S3.CodeAnalysis.dll",
-        "awssdk.s3.3.3.23.2.nupkg.sha512",
+        "awssdk.s3.3.3.24.nupkg.sha512",
         "awssdk.s3.nuspec",
         "lib/MonoAndroid10/AWSSDK.S3.XML",
         "lib/MonoAndroid10/AWSSDK.S3.dll",
@@ -1207,13 +1207,12 @@
         "lib/netstandard1.3/Google.Api.Gax.Rest.xml"
       ]
     },
-    "Google.Apis/1.35.2": {
-      "sha512": "kckpDbjCQA4lN9ZJ6Hb0SlWfg8e2ei0rqh+6bpuZLgB8MAL0tjwKZyr+d+iorKfB+SlmIgTtVfgDea1aH3dpbA==",
+    "Google.Apis/1.35.1": {
+      "sha512": "ZBWKDuj7qznEaNYHFRYcwbDfdDltqfeUrpVL8ijahy7KGG8DdHBY86uA2bpiKTAmgbOO7TKNkvaURAVJur98eQ==",
       "type": "package",
-      "path": "google.apis/1.35.2",
+      "path": "google.apis/1.35.1",
       "files": [
-        ".signature.p7s",
-        "google.apis.1.35.2.nupkg.sha512",
+        "google.apis.1.35.1.nupkg.sha512",
         "google.apis.nuspec",
         "lib/net45/Google.Apis.PlatformServices.dll",
         "lib/net45/Google.Apis.dll",
@@ -1227,13 +1226,12 @@
         "lib/netstandard2.0/Google.Apis.xml"
       ]
     },
-    "Google.Apis.Auth/1.35.2": {
-      "sha512": "pcXQGo6gjY9Tt7+UkPcOYnh/hvBbCEKif+JEUSijkpR8Z8TxIOKcDOEhRNHXv7ohufg89hllzojm+4ae+wFQFA==",
+    "Google.Apis.Auth/1.35.1": {
+      "sha512": "GklaB+R3yiC13T/duEW10uqvugSr1zgPcn1P3O4hOPcMoS4Z/NvGYns2IoEywVKXuFg4kGH/VUCZ7xSUdcAV6g==",
       "type": "package",
-      "path": "google.apis.auth/1.35.2",
+      "path": "google.apis.auth/1.35.1",
       "files": [
-        ".signature.p7s",
-        "google.apis.auth.1.35.2.nupkg.sha512",
+        "google.apis.auth.1.35.1.nupkg.sha512",
         "google.apis.auth.nuspec",
         "lib/net45/Google.Apis.Auth.PlatformServices.dll",
         "lib/net45/Google.Apis.Auth.dll",
@@ -1249,13 +1247,12 @@
         "lib/netstandard2.0/Google.Apis.Auth.xml"
       ]
     },
-    "Google.Apis.Core/1.35.2": {
-      "sha512": "MbCIK1KxWT3yQJtuI77NwzGPmNmAaEPSYdhY9ObdypQkxe9yApw75L2V/30/YHslCc1fNrlJ5HRE9DEp90jOIw==",
+    "Google.Apis.Core/1.35.1": {
+      "sha512": "xVzrkplgHMOCqFQHIfy9HvJBKNLQaRV+orWFHjpUAtGZe0GghHdQKG5dzLNnYjLQXICBftlK5FWk9AoAotYbYw==",
       "type": "package",
-      "path": "google.apis.core/1.35.2",
+      "path": "google.apis.core/1.35.1",
       "files": [
-        ".signature.p7s",
-        "google.apis.core.1.35.2.nupkg.sha512",
+        "google.apis.core.1.35.1.nupkg.sha512",
         "google.apis.core.nuspec",
         "lib/net45/Google.Apis.Core.dll",
         "lib/net45/Google.Apis.Core.pdb",
@@ -1268,13 +1265,13 @@
         "lib/netstandard2.0/Google.Apis.Core.xml"
       ]
     },
-    "Google.Apis.Storage.v1/1.35.2.1343": {
-      "sha512": "YmsuaXkj1mdfw5whsMAE7Qj6wYVqeFpP13Uzxh6kAiL4K0kr6HPj/DrPYkBBFq/Qv1BYci3NFWrFwdDhekXsAA==",
+    "Google.Apis.Storage.v1/1.35.1.1266": {
+      "sha512": "5yVSpcDuS2swyrK518EyEddQow2c36x2sSRYY5JhMLknEVeeTH5E7b5x6zaUQlYjf8O/ovDQO7qLUCJzj34V9w==",
       "type": "package",
-      "path": "google.apis.storage.v1/1.35.2.1343",
+      "path": "google.apis.storage.v1/1.35.1.1266",
       "files": [
         ".signature.p7s",
-        "google.apis.storage.v1.1.35.2.1343.nupkg.sha512",
+        "google.apis.storage.v1.1.35.1.1266.nupkg.sha512",
         "google.apis.storage.v1.nuspec",
         "lib/net40/Google.Apis.Storage.v1.dll",
         "lib/net40/Google.Apis.Storage.v1.pdb",
@@ -1293,13 +1290,13 @@
         "lib/netstandard2.0/Google.Apis.Storage.v1.xml"
       ]
     },
-    "Google.Cloud.Storage.V1/2.3.0-beta01": {
-      "sha512": "Cp150z1CR9d7nlrGNChBB01PnScX9MCdzy2q0AooOqiDbPNaKK5RFvLGABLZM73Say54ULFKnB4B8tH0DXFTsA==",
+    "Google.Cloud.Storage.V1/2.2.0": {
+      "sha512": "c4pWnndwCdOfrodNX0g8DOyPQDYBVZB1cJElfbJwZpxaVqvV6dyTwpipT+B8J+XJNZDv040M90k+zUtAImwcyw==",
       "type": "package",
-      "path": "google.cloud.storage.v1/2.3.0-beta01",
+      "path": "google.cloud.storage.v1/2.2.0",
       "files": [
         ".signature.p7s",
-        "google.cloud.storage.v1.2.3.0-beta01.nupkg.sha512",
+        "google.cloud.storage.v1.2.2.0.nupkg.sha512",
         "google.cloud.storage.v1.nuspec",
         "lib/net45/Google.Cloud.Storage.V1.dll",
         "lib/net45/Google.Cloud.Storage.V1.pdb",
@@ -3965,9 +3962,9 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "AWSSDK.S3 >= 3.3.23.2",
+      "AWSSDK.S3 >= 3.3.24",
       "CsvHelper >= 7.1.1",
-      "Google.Cloud.Storage.V1 >= 2.3.0-beta01",
+      "Google.Cloud.Storage.V1 >= 2.2.0",
       "Microsoft.NETCore.App >= 2.1.0",
       "Newtonsoft.Json >= 11.0.2",
       "WindowsAzure.Storage >= 9.3.2"
@@ -4016,7 +4013,7 @@
         "dependencies": {
           "AWSSDK.S3": {
             "target": "Package",
-            "version": "[3.3.23.2, )"
+            "version": "[3.3.24, )"
           },
           "CsvHelper": {
             "target": "Package",
@@ -4024,7 +4021,7 @@
           },
           "Google.Cloud.Storage.V1": {
             "target": "Package",
-            "version": "[2.3.0-beta01, )"
+            "version": "[2.2.0, )"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",
