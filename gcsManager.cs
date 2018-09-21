@@ -46,10 +46,10 @@ namespace COLT
         }
 
 
-        public void UploadFile(byte[] bytes, string name)
+        public async Task UploadFileAsync(byte[] bytes, string name)
         {
 
-            _gcsClient.UploadObject(_bucketName, name, "application/octet-stream",  new MemoryStream(bytes));
+           await _gcsClient.UploadObjectAsync(_bucketName, name, "application/octet-stream",  new MemoryStream(bytes));
                        
         }
 

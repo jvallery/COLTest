@@ -12,3 +12,4 @@ C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\linux-x64\COLT.
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\linux-x64\COLT.AssemblyInfo.cs
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\linux-x64\COLT.dll
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\linux-x64\COLT.pdb
+C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\linux-x64\COLT.csprojAssemblyReference.cache

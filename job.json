@@ -10,7 +10,13 @@
         "awsServiceUrl": "https://s3.amazonaws.com"
       },
       {
-        "name": "blob",
+        "name": "Blob-EUS2",
+        "type": "blob",
+        "blobStorageAccountConnectionString": "***REMOVED***",
+        "blobContainer": "test"
+      },
+      {
+        "name": "PremiumBlob-EUS2",
         "type": "blob",
         "blobStorageAccountConnectionString": "***REMOVED***",
         "blobContainer": "test"
@@ -23,53 +29,59 @@
         "credential": "***REMOVED***"
       }
     ],
-    "output": "blob"
+    "output": "Blob-EUS2"
   },
   "jobs": [
     {
-      "name": "Upload to S3",
+      "name": "Upload to Premium Blob",
+      "type": "upload",
+      "cloud": "PremiumBlob-EUS2",
+      "fileCount": 100,
+      "fileSizeInBytes": 65536,
+      "filePrefix": "Test",
+      "threads": 8
+    },
+    {
+      "name": "Download from Premium Blob",
+      "type": "download",
+      "cloud": "PremiumBlob-EUS2",
+      "downloadCount": 100,
+      "filePrefix": "Test",
+      "threads": 8
+    },
+    {
+      "name": "Upload to Premium AWS",
       "type": "upload",
       "cloud": "aws",
       "fileCount": 100,
-      "fileSizeInBytes": 1048576,
-      "filePrefix": "new"
+      "fileSizeInBytes": 65536,
+      "filePrefix": "Test",
+      "threads": 8
+    },
+    {
+      "name": "Download from AWS",
+      "type": "download",
+      "cloud": "aws",
+      "downloadCount": 100,
+      "filePrefix": "Test",
+      "threads": 8
     },
     {
       "name": "Upload to GCS",
       "type": "upload",
       "cloud": "gcs",
       "fileCount": 100,
-      "fileSizeInBytes": 1048576,
-      "filePrefix": "new"
-    },
-    {
-      "name": "Upload to blob",
-      "type": "upload",
-      "cloud": "blob",
-      "fileCount": 100,
-      "fileSizeInBytes": 1048576,
-      "filePrefix": "new"
-    },
-    {
-      "name": "Download from blob",
-      "type": "download",
-      "cloud": "blob",
-      "downloadCount": 100,
-      "filePrefix": "new"
-    },
-    {
-      "name": "Download from S3",
-      "type": "download",
-      "cloud": "aws",
-      "downloadCount": 100,
-      "filePrefix": "new"
+      "fileSizeInBytes": 65536,
+      "filePrefix": "Test",
+      "threads": 8
     },
     {
       "name": "Download from GCS",
       "type": "download",
       "cloud": "gcs",
       "downloadCount": 100,
-      "filePrefix": "new"
+      "filePrefix": "Test",
+      "threads": 8
     }
   ]
 }
