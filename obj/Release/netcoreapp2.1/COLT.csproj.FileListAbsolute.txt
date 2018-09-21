@@ -20,4 +20,3 @@ C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.AssemblyIn
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.AssemblyInfo.cs
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.dll
 C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.pdb
-C:\Users\javaller\source\repos\COLTest\obj\Release\netcoreapp2.1\COLT.csprojAssemblyReference.cache
