@@ -36,6 +36,7 @@ namespace COLT
             sasConstraints.SharedAccessStartTime = DateTimeOffset.UtcNow.AddMinutes(-5);
             sasConstraints.SharedAccessExpiryTime = DateTimeOffset.UtcNow.AddMinutes(durationInMinutes);
             sasConstraints.Permissions = SharedAccessBlobPermissions.Read;
+            
 
             string sasBlobToken = blob.GetSharedAccessSignature(sasConstraints);
             Uri sourceUri = new Uri(blob.Uri + sasBlobToken);
@@ -43,6 +44,23 @@ namespace COLT
 
             return sourceUri.ToString();
         }
+
+        public string GetContainerSASRead(int durationInMinutes)
+        {
+            SharedAccessBlobPolicy sasConstraints = new SharedAccessBlobPolicy();
+            sasConstraints.SharedAccessStartTime = DateTimeOffset.UtcNow.AddMinutes(-5);
+            sasConstraints.SharedAccessExpiryTime = DateTimeOffset.UtcNow.AddMinutes(durationInMinutes);
+            sasConstraints.Permissions = SharedAccessBlobPermissions.Read;
+
+            return _container.GetSharedAccessSignature(sasConstraints);
+
+        }
+
+        public string GetBlobURL(string key)
+        {
+            return _container.GetBlobReference(key).Uri.ToString();
+        }
+
 
 
         public async Task UploadFileAsync(byte[] bytes, string name)

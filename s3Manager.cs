@@ -16,21 +16,31 @@ namespace COLT
         private string _awsAccessKey;
         private string _awsSecretKey;
         private string _awsServiceUrl;
+        private string _awsRegion;
         private AmazonS3Client _s3Client;
 
-        public s3Manager(string awsAccessKey, string awsSecretKey, string awsServiceUrl, string bucketName)
+        public s3Manager(string awsAccessKey, string awsSecretKey, string awsServiceUrl, string awsRegion, string bucketName)
         {
             _bucketName = bucketName;
             _awsAccessKey = awsAccessKey;
             _awsSecretKey = awsSecretKey;
             _awsServiceUrl = awsServiceUrl;
+            _awsRegion = awsRegion;
+
+            var region = RegionEndpoint.GetBySystemName(awsRegion);
+
             AmazonS3Config config = new AmazonS3Config
             {
-                ServiceURL = _awsServiceUrl
-            };
+                ServiceURL = _awsServiceUrl,
+                RegionEndpoint = region,
+            };            
+
+            AWSConfigsS3.UseSignatureVersion4 = true;
 
             _s3Client = new AmazonS3Client(_awsAccessKey, _awsSecretKey, config);
         }
+
+        
         public string GeneratePreSignedURL(int durationInMinutes, string key)
         {
             string urlString = "";
@@ -43,14 +53,10 @@ namespace COLT
                     Expires = DateTime.Now.AddMinutes(durationInMinutes)
                 };
                 urlString = _s3Client.GetPreSignedURL(request);
-            }
-            catch (AmazonS3Exception e)
-            {
-                Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
-            }
+            }         
             catch (Exception e)
             {
-                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+                Console.WriteLine("Error generating signed url for s3:", e.Message);
             }
             return urlString;
         }

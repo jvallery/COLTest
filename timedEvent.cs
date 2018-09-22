@@ -23,6 +23,8 @@ namespace COLT
         public DateTime startTime { get; set; }
         public DateTime finishTime { get; set; }
 
+        public int httpStatusCode { get; set; }
+
         public string url { get; set; }
 
 

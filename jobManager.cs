@@ -36,6 +36,7 @@ namespace COLT
         public string type { get; set; }
         public string awsAccessKeySecret { get; set; }
         public string awsAccessKey { get; set; }
+        public string awsRegion { get; set; }
         public string awsS3bucket { get; set; }
         public string gcsbucket { get; set; }
         public string awsServiceUrl { get; set; }

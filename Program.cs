@@ -21,7 +21,7 @@ namespace COLT
         //Timed events
         private static ConcurrentQueue<TimedEvent> timedEvents = new ConcurrentQueue<TimedEvent>();
         private static IPInfo _ip;
-
+        private static HttpClient httpClient = new HttpClient();
         static void Main(string[] args)
         {
             //Load JSON file with configuration and job definitions
@@ -35,11 +35,10 @@ namespace COLT
 
 
             //Determine client IP address for tracking source of test data using ipinfo service
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var response = httpClient.GetAsync("http://ipinfo.io/json").Result;
-                _ip = JsonConvert.DeserializeObject<IPInfo>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-            }
+
+            var response = httpClient.GetAsync("http://ipinfo.io/json").Result;
+            _ip = JsonConvert.DeserializeObject<IPInfo>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+
 
             Console.WriteLine("Job file contains {0} jobs and {1} storage targets", manager.job.jobs.Length, manager.job.config.cloud.Length);
 
@@ -109,6 +108,9 @@ namespace COLT
 
         private static void Download(Job job)
         {
+            if (job.downloadCount == 0)
+                return;
+
             Cloud cloud;
             if (_cloudConfig.TryGetValue(job.cloud, out cloud))
             {
@@ -120,7 +122,7 @@ namespace COLT
 
                         try
                         {
-                            s3Manager s3 = new s3Manager(cloud.awsAccessKey, cloud.awsAccessKeySecret, cloud.awsServiceUrl, cloud.awsS3bucket);
+                            s3Manager s3 = new s3Manager(cloud.awsAccessKey, cloud.awsAccessKeySecret, cloud.awsServiceUrl, cloud.awsRegion, cloud.awsS3bucket);
                             List<string> s3files = s3.GetFileListAsync(job.filePrefix).GetAwaiter().GetResult();
 
                             Parallel.For(0, job.downloadCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads }, (i, state) =>
@@ -146,11 +148,13 @@ namespace COLT
                             blobManager blobClient = new blobManager(cloud.blobStorageAccountConnectionString, cloud.blobContainer);
                             List<string> blobFiles = blobClient.GetFileListAsync(job.filePrefix).GetAwaiter().GetResult();
 
+                            string containerSas = blobClient.GetContainerSASRead(20);
+
                             Parallel.For(0, job.downloadCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads }, (i, state) =>
                            {
                                Random rnd = new Random();
                                int r = rnd.Next(blobFiles.Count);
-                               string url = blobClient.GeneratePreSignedURL(10, blobFiles[r]);
+                               string url = string.Format("{0}{1}", blobClient.GetBlobURL(blobFiles[r]), containerSas);
                                urlsToDownload.Add(url);
                            });
 
@@ -183,48 +187,50 @@ namespace COLT
 
 
                 List<double> results = new List<double>();
+                int downloadCount = 0;
                 Parallel.ForEach(urlsToDownload, new ParallelOptions { MaxDegreeOfParallelism = job.threads }, url =>
                {
-                   using (HttpClient httpClient = new HttpClient())
+
+                   try
                    {
-                       try
-                       {
-                           TimedEvent timer = new TimedEvent();
-                           timer.sourceCity = _ip.city;
-                           timer.sourceCountry = _ip.country;
-                           timer.sourceIp = _ip.ip;
-                           timer.sourceLoc = _ip.loc;
-                           timer.sourceOrg = _ip.org;
-                           timer.sourcePostal = _ip.postal;
-                           timer.sourceRegion = _ip.region;
-                           timer.cloudName = cloud.name;
-                           timer.cloudType = cloud.type;
-                           timer.eventType = job.type;
-                           timer.startTime = DateTime.UtcNow;
-                           timer.url = url;
+                       TimedEvent timer = new TimedEvent();
+                       timer.sourceCity = _ip.city;
+                       timer.sourceCountry = _ip.country;
+                       timer.sourceIp = _ip.ip;
+                       timer.sourceLoc = _ip.loc;
+                       timer.sourceOrg = _ip.org;
+                       timer.sourcePostal = _ip.postal;
+                       timer.sourceRegion = _ip.region;
+                       timer.cloudName = cloud.name;
+                       timer.cloudType = cloud.type;
+                       timer.eventType = job.type;
+                       timer.startTime = DateTime.UtcNow;
+                       timer.url = url;
 
-                           Stopwatch stopwatch = new Stopwatch();
-                           stopwatch.Start();
+                       Stopwatch stopwatch = new Stopwatch();
+                       stopwatch.Start();
 
-                           //download
-                           var response = httpClient.GetAsync(url).Result;
+                       //download
+                       var response = httpClient.GetAsync(url).Result;
 
-                           stopwatch.Stop();
+                       stopwatch.Stop();
 
-                           timer.elapsedMiliseconds = stopwatch.ElapsedMilliseconds;
-                           timer.finishTime = DateTime.UtcNow;
+                       timer.elapsedMiliseconds = stopwatch.ElapsedMilliseconds;
+                       timer.finishTime = DateTime.UtcNow;
+                       downloadCount++;
+                       var content = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+                       timer.fileSizeInBytes = content.Length;
 
-                           var content = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
-
-                           timer.fileSizeInBytes = content.Length;
-                           timedEvents.Enqueue(timer);
-                           results.Add(timer.elapsedMiliseconds);
-                           Console.WriteLine("Downloaded {0} from {1} in {2} ms", timer.fileName, timer.cloudName, timer.elapsedMiliseconds);
-                       } catch (Exception ex)
-                       {
-                           Console.WriteLine("Error downloading: {0}", url);
-                       }
+                       timer.httpStatusCode = (int)response.StatusCode;
+                       timedEvents.Enqueue(timer);
+                       results.Add(timer.elapsedMiliseconds);
+                       Console.WriteLine("{0}: HTTP {1} - Downloaded {2} bytes from {3} in {4} ms", downloadCount, timer.httpStatusCode, timer.fileSizeInBytes, timer.cloudName, timer.elapsedMiliseconds);
                    }
+                   catch (Exception ex)
+                   {
+                       Console.WriteLine("Error downloading: {0}", url);
+                   }
+
                });
 
                 Console.WriteLine("Average latency: {0}, 99th percentile: {1}", Average(results), Percentile(results, 0.99));
@@ -245,56 +251,58 @@ namespace COLT
 
                         try
                         {
-
-                            Parallel.For(0, job.fileCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads },  (i, state) =>
-                           {
-                               s3Manager s3 = new s3Manager(cloud.awsAccessKey, cloud.awsAccessKeySecret, cloud.awsServiceUrl, cloud.awsS3bucket);
-                               try
-                               {
-
-                                   TimedEvent timer = new TimedEvent();
-                                   timer.sourceCity = _ip.city;
-                                   timer.sourceCountry = _ip.country;
-                                   timer.sourceIp = _ip.ip;
-                                   timer.sourceLoc = _ip.loc;
-                                   timer.sourceOrg = _ip.org;
-                                   timer.sourcePostal = _ip.postal;
-                                   timer.sourceRegion = _ip.region;
-                                   timer.cloudName = cloud.name;
-                                   timer.cloudType = cloud.type;
-                                   timer.eventType = job.type;
-                                   timer.fileName = job.filePrefix + i;
-                                   timer.startTime = DateTime.UtcNow;
+                            s3Manager s3 = new s3Manager(cloud.awsAccessKey, cloud.awsAccessKeySecret, cloud.awsServiceUrl, cloud.awsRegion, cloud.awsS3bucket);
 
 
-                                   byte[] bytes = fileManager.generateRandomBytes(job.fileSizeInBytes);
+                            Parallel.For(0, job.fileCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads }, (i, state) =>
+                          {
 
-                                   Stopwatch stopwatch = new Stopwatch();
-                                   stopwatch.Start();
+                              try
+                              {
 
-                                   //Upload
-                                   s3.UploadFileAsync(bytes, job.filePrefix + i).GetAwaiter().GetResult();
+                                  TimedEvent timer = new TimedEvent();
+                                  timer.sourceCity = _ip.city;
+                                  timer.sourceCountry = _ip.country;
+                                  timer.sourceIp = _ip.ip;
+                                  timer.sourceLoc = _ip.loc;
+                                  timer.sourceOrg = _ip.org;
+                                  timer.sourcePostal = _ip.postal;
+                                  timer.sourceRegion = _ip.region;
+                                  timer.cloudName = cloud.name;
+                                  timer.cloudType = cloud.type;
+                                  timer.eventType = job.type;
+                                  timer.fileName = job.filePrefix + i;
+                                  timer.startTime = DateTime.UtcNow;
 
-                                   stopwatch.Stop();
 
-                                   bytes = null;
-                                   GC.Collect();
+                                  byte[] bytes = fileManager.generateRandomBytes(job.fileSizeInBytes);
 
-                                   timer.elapsedMiliseconds = stopwatch.ElapsedMilliseconds;
-                                   timer.finishTime = DateTime.UtcNow;
+                                  Stopwatch stopwatch = new Stopwatch();
+                                  stopwatch.Start();
 
-                                   timer.fileSizeInBytes = job.fileSizeInBytes;
-                                   timedEvents.Enqueue(timer);
+                                  //Upload
+                                  s3.UploadFileAsync(bytes, job.filePrefix + i).GetAwaiter().GetResult();
 
-                                   results.Add(timer.elapsedMiliseconds);
+                                  stopwatch.Stop();
 
-                               }
-                               catch (Exception ex)
-                               {
-                                   Console.WriteLine(ex.Message);
-                               }
-                               Console.WriteLine("{0}{1} uploaded to {2}", job.filePrefix, i, cloud.name);
-                           });
+                                  bytes = null;
+                                  GC.Collect();
+
+                                  timer.elapsedMiliseconds = stopwatch.ElapsedMilliseconds;
+                                  timer.finishTime = DateTime.UtcNow;
+
+                                  timer.fileSizeInBytes = job.fileSizeInBytes;
+                                  timedEvents.Enqueue(timer);
+
+                                  results.Add(timer.elapsedMiliseconds);
+
+                              }
+                              catch (Exception ex)
+                              {
+                                  Console.WriteLine(ex.Message);
+                              }
+                              Console.WriteLine("{0}{1} uploaded to {2}", job.filePrefix, i, cloud.name);
+                          });
 
                         }
                         catch (Exception ex)
@@ -309,10 +317,11 @@ namespace COLT
 
                         try
                         {
+                            gcsManager gcs = new gcsManager(Encoding.UTF8.GetString(Convert.FromBase64String(cloud.credential)), cloud.gcsbucket, cloud.projectid);
 
                             Parallel.For(0, job.fileCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads }, (i, state) =>
                             {
-                                gcsManager gcs = new gcsManager(Encoding.UTF8.GetString(Convert.FromBase64String(cloud.credential)), cloud.gcsbucket, cloud.projectid);
+
                                 try
                                 {
                                     TimedEvent timer = new TimedEvent();
@@ -373,58 +382,58 @@ namespace COLT
                     case "blob":
                         try
                         {
+                            blobManager blobClient = new blobManager(cloud.blobStorageAccountConnectionString, cloud.blobContainer);
+
+                            Parallel.For(0, job.fileCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads }, (i, state) =>
+                           {
 
 
-                            Parallel.For(0, job.fileCount, new ParallelOptions { MaxDegreeOfParallelism = job.threads },  (i, state) =>
-                            {
-                                blobManager blobClient = new blobManager(cloud.blobStorageAccountConnectionString, cloud.blobContainer);
-
-                                try
-                                {
-                                    TimedEvent timer = new TimedEvent();
-                                    timer.sourceCity = _ip.city;
-                                    timer.sourceCountry = _ip.country;
-                                    timer.sourceIp = _ip.ip;
-                                    timer.sourceLoc = _ip.loc;
-                                    timer.sourceOrg = _ip.org;
-                                    timer.sourcePostal = _ip.postal;
-                                    timer.sourceRegion = _ip.region;
-                                    timer.cloudName = cloud.name;
-                                    timer.cloudType = cloud.type;
-                                    timer.eventType = job.type;
-                                    timer.fileName = job.filePrefix + i;
-                                    timer.startTime = DateTime.UtcNow;
+                               try
+                               {
+                                   TimedEvent timer = new TimedEvent();
+                                   timer.sourceCity = _ip.city;
+                                   timer.sourceCountry = _ip.country;
+                                   timer.sourceIp = _ip.ip;
+                                   timer.sourceLoc = _ip.loc;
+                                   timer.sourceOrg = _ip.org;
+                                   timer.sourcePostal = _ip.postal;
+                                   timer.sourceRegion = _ip.region;
+                                   timer.cloudName = cloud.name;
+                                   timer.cloudType = cloud.type;
+                                   timer.eventType = job.type;
+                                   timer.fileName = job.filePrefix + i;
+                                   timer.startTime = DateTime.UtcNow;
 
 
 
-                                    byte[] bytes = fileManager.generateRandomBytes(job.fileSizeInBytes);
+                                   byte[] bytes = fileManager.generateRandomBytes(job.fileSizeInBytes);
 
-                                    Stopwatch stopwatch = new Stopwatch();
-                                    stopwatch.Start();
+                                   Stopwatch stopwatch = new Stopwatch();
+                                   stopwatch.Start();
 
-                                    //Upload
-                                    blobClient.UploadFileAsync(bytes, job.filePrefix + i).GetAwaiter().GetResult();
+                                   //Upload
+                                   blobClient.UploadFileAsync(bytes, job.filePrefix + i).GetAwaiter().GetResult();
 
-                                    stopwatch.Stop();
+                                   stopwatch.Stop();
 
-                                    bytes = null;
-                                    GC.Collect();
+                                   bytes = null;
+                                   GC.Collect();
 
 
-                                    timer.elapsedMiliseconds = stopwatch.ElapsedMilliseconds;
-                                    timer.finishTime = DateTime.UtcNow;
+                                   timer.elapsedMiliseconds = stopwatch.ElapsedMilliseconds;
+                                   timer.finishTime = DateTime.UtcNow;
 
-                                    timer.fileSizeInBytes = job.fileSizeInBytes;
-                                    timedEvents.Enqueue(timer);
-                                    results.Add(timer.elapsedMiliseconds);
+                                   timer.fileSizeInBytes = job.fileSizeInBytes;
+                                   timedEvents.Enqueue(timer);
+                                   results.Add(timer.elapsedMiliseconds);
 
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine(ex.Message);
-                                }
-                                Console.WriteLine("{0}{1} uploaded to {2}", job.filePrefix, i, cloud.name);
-                            });
+                               }
+                               catch (Exception ex)
+                               {
+                                   Console.WriteLine(ex.Message);
+                               }
+                               Console.WriteLine("{0}{1} uploaded to {2}", job.filePrefix, i, cloud.name);
+                           });
 
                         }
                         catch (Exception ex)
