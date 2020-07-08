@@ -4,8 +4,8 @@
       {
         "name": "aws",
         "type": "s3",
-        "awsAccessKey": "AKIAIJ5ABJ3M4TKRJSLA",
-        "awsAccessKeySecret": "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",
+        "awsAccessKey": "XXXX",
+        "awsAccessKeySecret": "XXXX",
         "awsS3bucket": "coltaws2",
         "awsServiceUrl": "https://s3.amazonaws.com",
         "awsRegion": "us-east-2"
@@ -13,13 +13,13 @@
       {
         "name": "Blob-EUS2",
         "type": "blob",
-        "blobStorageAccountConnectionString": "DefaultEndpointsProtocol=https;AccountName=colttest;AccountKey=PTXViID9So2/bZl0zoDMxOmnU7KRF/h5ZGSVzYgwS1URUx6OSbNLOwYPPdxYsmJFDijf5m2dtAaVN4/OzGVG3w==;EndpointSuffix=core.windows.net",
+        "blobStorageAccountConnectionString": "DefaultEndpointsProtocol=https;AccountName=colttest;AccountKey=XXXX;EndpointSuffix=core.windows.net",
         "blobContainer": "test"
       },
       {
         "name": "PremiumBlob-EUS2",
         "type": "blob",
-        "blobStorageAccountConnectionString": "DefaultEndpointsProtocol=https;AccountName=jval;AccountKey=/7hxAX0BWsTHT8uNs90YBAR3oIKMrOlthOZQul8aIydkEcM4fcgvNmlBJnDqGFpf7YQ4+pb52Ofkkv/xg49UPg==;EndpointSuffix=core.windows.net",
+        "blobStorageAccountConnectionString": "DefaultEndpointsProtocol=https;AccountName=jval;AccountKey=XXXX;EndpointSuffix=core.windows.net",
         "blobContainer": "test"
       },
       {
@@ -27,7 +27,7 @@
         "type": "gcs",
         "gcsbucket": "javallergcs-east",
         "projectid": "bubbly-clarity-662",
-        "credential": "ew0KICAidHlwZSI6ICJzZXJ2aWNlX2FjY291bnQiLA0KICAicHJvamVjdF9pZCI6ICJidWJibHktY2xhcml0eS02NjIiLA0KICAicHJpdmF0ZV9rZXlfaWQiOiAiNzMxNjA2M2Y2MjE0ZjliMGI0NGY3ZTkyMWMwZmYxNTgxZmE0YzAwNCIsDQogICJwcml2YXRlX2tleSI6ICItLS0tLUJFR0lOIFBSSVZBVEUgS0VZLS0tLS1cbk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRQ2hVZzluMXViOENQa3Bcbm1GRlFOU0JpdkJxL1lUUGE3c2h0M0FkZGZuVzFManNtcEhYQVBNNFBnVW41NnVsL0Q3ZnpBdVNpenEyWHo5eEJcbmcydUVZU2NRV2ZUYnRpU2c1ejQ2bkc1RHRjM3R0b1lVcDUyZVdVb3R5OG92VTNja3diZWowdU5pcS9PSFZZZW1cblVsb1dCb000UTI3YkE5RDVwd0dPd1RUZHYwL2ZNZm92VnMwQVpMR0lETDlReGl4c1BQY1piZjhyeWhPSDZtZXFcbkdwTXZ0Smc2c1FLUDFJbGZEQklMMGRwVzgzTzFydjU0MTY0eWZPNU8zcmRLcnppcHJaZHQvaVl2dzJxRmNOYXNcbk9rY2U2MTlsalB6UUR2K0dUYnZjcENXdjFjcGNUclg0SmJVOEtDUXRqUGppMW1qM0xLdFNaSVdPUFd3eEx2b0JcbldEbUE1Z3duQWdNQkFBRUNnZ0VBQ2J6dWV2Q0JLQVNyMmNQV2svQTEybHkvSFA5Z09VVDA5MkMvdlhncnJkUGxcbjU1ZU9maHZ6OE02cXFXMGs1REgwTmpWM21ZL3lKQk9XWmFRRHdwcEV2eHNLUFBzVHE1QU5KK2VYVE1oMTFZOWRcbitVQTNBRDd4eTNycVNkb1FycDg4L2ZIQzY0c0JHOTZVS3Z4akNsdnVGVWJpWm9Yekp2T25sRkQ3bW54ZlFkUVpcbkRTTDFsZjJHUnhQMU5yOGlnbm5JcUpKTXc1bEliWXNYS0FJN1k0Y2xaWlZjUGlyY21HY3dQVk9jU2pVQU1DK0JcbllIbEJwa3Zjd0VOK3VrMlZ4MzJMUFVtbVl1MXd3NngvazNZU2Q0dlJqWUI3M05iQjVyU2tvTjhXLzRMSlF6WWpcbm9OYVM5a212VFN4eEZSY2NadVJwQWw4TGFaV1BuclZuSzdjRHZHY01uUUtCZ1FEUkpsVWRMbnN3cm11ZVQrMnlcblNKeVkwa1BQVmFNVXY1bXlHcmxuT3hlYmhKQ2UrRHVvYmtLZFBhYk94NGJlbHoxdUhWb3BuS3RvSCthYm9HY2lcbjIxT0U3Rnp0Sm5WNzBSOWg0V1VmN3dJUDJhdGkvSTZ4cktLYWlOZmF5NG93WDJ4dmNibW9uNWwxSGpTZ1pBTDhcbkdSaUptZGZwTjF0ejVROUF2TW1ueGZBZll3S0JnUURGZFBmb1dxTTY2VUxYR1BXL2xEajhMSHNqRTJYQmhRZEdcbnI0anF0NkRLWHhnVnczQWp1VWs2OG0yeUVrWjJSMmZUMDFuUTE4QTdBN0hKdmY5NW1vekNBdVZDd2R6VkhmWENcbk50WlpNQUptSVFLUFlXY2l2aU5OSVBRNzBITWcweG0wSTU5VkF3UTJENkNGRW50bWhwT2tuOVU4YXVmZkI2MnZcbnJ0MGZ4L0ZGYlFLQmdRQ1ZwUEtqTlgycEFETTZDNEJMM281RS9iVE01VDRRKzJJUnYvTkYvRTdRMUJIUjNGUjdcbkY2RUw5bStpWmJxSEN2bEdEelJTcjZrb2tDS2syU2pTRk5GMk90UG1UbTBpMFNhK0Z0SU8vaWlnaEtLTzZadURcblhyemRDdW8rdndFNXlSekJ4RUlOZDF3S0l6bU9ST0NwMVo3cjNTcFIwR3pieUZtWWZUdGZrazFUZHdLQmdCMlRcbkgyNlY1TXoyRXlUVWdEcHBvUDlrU2kwK3dvYnh2ZDFBZldscWg1TElHM3RuQW16WFc3aVFodzJjM3lEb0lRMEJcbkl2cTgxZllBMzZndjVRdjVzZ3Q5RTRta0w4ZGI3V3RoZTBsd2YydDhsajJUZ1RjYTgzNmg2UExzamRIa3pIekdcbnVSNnFqUDdyNkVjR05hVnRrcitka1BxenFIY25WMFJ4RkgybUhPVWhBb0dCQUkvZlV3K0pMSDlQdWJZTlhPY3pcbmRJVDJjUWFTank2NEJFTC9YYVdqWHhpT2xDaVh0d0pyT1labjltTTYrNWpzWWZoT1M4ejRwTWNoR2ljTmt5SUxcbjYzamNsRWNYNmRxRG9OYWk2b1k3WjgxL2JpSVBIOEpLY2d5WEw2eWJXa3VBTEVURktHenhtSi9yTm95QzAvSWFcblB5V1Jsbmt3MUJFZUNocDF6bjZoWVB4QVxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwNCiAgImNsaWVudF9lbWFpbCI6ICJjb2x0dGVzdEBidWJibHktY2xhcml0eS02NjIuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLA0KICAiY2xpZW50X2lkIjogIjExNDE3NTA5NjYxMDUxODgwODA5NCIsDQogICJhdXRoX3VyaSI6ICJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20vby9vYXV0aDIvYXV0aCIsDQogICJ0b2tlbl91cmkiOiAiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLA0KICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsDQogICJjbGllbnRfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9yb2JvdC92MS9tZXRhZGF0YS94NTA5L2NvbHR0ZXN0JTQwYnViYmx5LWNsYXJpdHktNjYyLmlhbS5nc2VydmljZWFjY291bnQuY29tIg0KfQ0K"
+        "credential": "XXXX"
       }
     ],
     "output": "Blob-EUS2"
